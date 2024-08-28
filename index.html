@@ -1,75 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paris Olympics Schedule Subscription</title>
-    <style>
-        body {
-            background: url('https://example.com/paris-olympics-bg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            text-align: center;
-            padding: 50px;
-        }
-        .container {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        input[type="email"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin: 10px 0;
-        }
-        button {
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            background-color: #ffcc00;
-            color: #000;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Subscribe to Paris Olympics Schedule</h1>
-        <form id="subscriptionForm">
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <button type="submit">Subscribe</button>
-        </form>
-    </div>
+<!DOCTYPE html>  
+    <html lang="en">  
+    <head>  
+        <meta charset="UTF-8">  
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+        <title>Colorful Xylophone</title>  
+        <script src="https://cdn.tailwindcss.com"></script>  
+        <style>  
+            .key {  
+                width: 60px;  
+                height: 200px;  
+                margin: 5px;  
+                display: inline-block;  
+                border-radius: 10px;  
+                cursor: pointer;  
+                transition: background-color 0.2s;  
+            }  
+            .key:active {  
+                transform: translateY(4px);  
+                background-color: rgba(255, 255, 255, 0.7);  
+            }  
+        </style>  
+    </head>  
+    <body class="flex justify-center items-center h-screen bg-gray-100">  
+        <div id="xylophone" class="flex">  
+            <div class="key bg-red-500" data-frequency="261.63"></div>  
+            <div class="key bg-orange-500" data-frequency="293.66"></div>  
+            <div class="key bg-yellow-500" data-frequency="329.63"></div>  
+            <div class="key bg-green-500" data-frequency="349.23"></div>  
+            <div class="key bg-blue-500" data-frequency="392.00"></div>  
+            <div class="key bg-indigo-500" data-frequency="440.00"></div>  
+            <div class="key bg-purple-500" data-frequency="493.88"></div>  
+        </div>  
+        <script>  
+            const keys = document.querySelectorAll('.key');  
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();  
 
-    <script>
-        document.getElementById('subscriptionForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
+            keys.forEach(key => {  
+                key.addEventListener('mousedown', () => {  
+                    const frequency = key.getAttribute('data-frequency');  
+                    playSound(frequency);  
+                    key.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';  
+                });  
 
-            fetch('/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Subscription successful!');
-                } else {
-                    alert('Subscription failed. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        });
-    </script>
-</body>
-</html>
+                key.addEventListener('mouseup', () => {  
+                    key.style.backgroundColor = '';  
+                });  
+            });  
 
+            function playSound(frequency) {  
+                const oscillator = audioContext.createOscillator();  
+                oscillator.type = 'sine';  
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);  
+                oscillator.connect(audioContext.destination);  
+                oscillator.start();  
+                oscillator.stop(audioContext.currentTime + 0.5);  
+            }  
+        </script>  
+    </body>  
+    </html>  
